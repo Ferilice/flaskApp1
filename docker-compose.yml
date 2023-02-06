@@ -1,10 +1,10 @@
 version: "3.9"
-
+name: "flaskApp1"
 services:
   web:
     build: web
-    ports:
-      - "56733:56733"
+    ports:      
+      - "56733:8000"
     volumes:
       - ./web:/app
     env_file:
