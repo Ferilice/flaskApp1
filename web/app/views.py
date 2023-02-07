@@ -12,6 +12,9 @@ def home():
 
 
 
+@app.route('/crash')
+def crash():
+    return 1/0
 
 @app.route('/db')
 def db_connection():
