@@ -1,0 +1,150 @@
+body {
+    background-color: cdcdc;
+}
+
+nav {
+    background-color: #ffffff;
+    margin-bottom: 5%;
+}
+
+img.tw-user-small {
+    height: 40px;
+}
+
+img.tw-user-medium {
+    height: 50px;
+}
+
+#nav-search {
+    margin-top: 3%;
+    border-radius: 20px;
+    background-color: #ffffff;
+
+}
+
+#nav-tweet-btn {
+    border-radius: 20px;
+    background-color: #f96767;
+    color: #ffffff;
+}
+
+.content-box {
+    background-color: #ffffff;
+    margin-bottom: 10px;
+}
+
+.content-box-s {
+    background-color: #36096d;
+    margin-bottom: 10px;
+    text-align: center;
+    height: 50px;
+    padding-top: 5%;
+
+}
+
+.content-box-l {
+    border-radius: 18px 0 0 18px;
+
+}
+
+.content-box-r {
+    border-radius: 0 18px 18px 0;
+
+}
+
+.new-tweet-row {
+
+    padding-bottom: 10px;
+}
+
+.tweet {
+    border-radius: 18px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #edf1f4;
+    margin-bottom: 5%;
+}
+
+.tweet-username {
+    font-weight: bold;
+}
+
+.tweet-arrow {
+    padding-right: 25px;
+}
+
+.tweet-text,
+.tweet-media {
+    padding-right: 10px;
+}
+
+.createCon {
+    border-width: medium;
+    width: 100%;
+    height: 200%;
+    margin-bottom: 1px;
+}
+
+input[id=name],
+input[type=email],
+#message,
+select,
+textarea {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    margin-top: 6px;
+    margin-bottom: 16px;
+    resize: vertical;
+}
+
+
+label {
+    width: 100px;
+}
+
+input[type=submit],
+.clear,
+.cancel {
+    background-color: #36096d;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+}
+
+input[type=submit]:hover,
+.cancel:hover,
+.clear:hover {
+    background-color: #5078f2;
+}
+
+.container-f {
+    border-radius: 18px;
+    border-bottom: 1px;
+    background-color: #ffffff;
+    padding: 20px;
+}
+
+.item {
+    margin-bottom: 20px;
+}
+
+
+#phonebook-table {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.fa-pen-to-square:hover,.fa-trash:hover {
+    opacity: 50%;
+    font-size: large;
+}
+
+.oi:hover{
+    opacity: 50%;
+    font-size: large;
+}
