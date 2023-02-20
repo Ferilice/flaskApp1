@@ -48,16 +48,16 @@
   <div id="add-edit" class="container container-f shadow-sm" hidden="hidden">
     <h2 id="add-edit-caption">Add/Edit a Contact:</h2>
     <form id="addPhoneNumberForm">
-      <label for="name">ชื่อ</label>
+      <label for="name" style="font-size: 1.1rem;">ชื่อ</label>
       <input type="text" id="name" name="name" placeholder="Your name.." required>
-      <label for="message">ข้อความ</label>
-      <input type="text" id="message" name="message" placeholder="Your message.." required>
-      <label for="phone">อีเมลล์</label>
+      <label for="message" style="font-size: 1.1rem;">ข้อความ</label>
+      <textarea rows="5" cols="30" id="message" name="message" placeholder="Your message.." required></textarea>
+      <label for="phone" style="font-size: 1.1rem;">อีเมลล์</label>
       <input class="message" type="email" id="email" name="email" placeholder="Your email.." required>
       <input type="hidden" id="entryid" name="id" value="">
       <input type="submit" name="submit" value="Submit">
-      <button class="clear" id="clear_form" type="button">Clear</button>
-      <button class="cancel" id="cancel_form" type="button">Cancel</button>
+      <button class="clear" id="clear_form" type="button" style="border-radius: 5px; padding: 12px 20px;">Clear</button>
+      <button class="cancel" id="cancel_form" type="button" style="border-radius: 5px; padding: 12px 20px;">Cancel</button>
     </form>
   </div>
   <!-- <div class="container">
@@ -118,7 +118,7 @@
             <div class="new-tweet-row">
               <div class="row">
                 <div class="col-md-12 mb-5">
-                  <button id="add_contact" class="bg-primary shadow rounded-pill createCon text-light fs-1 fw-bold"
+                  <button id="add_contact" class="shadow rounded-pill createCon text-light fs-1 fw-bold"
                     type="button"><i class="fa-solid fa-circle-plus pr-2"></i>Create Contact</button>
                 </div>
               </div>
@@ -185,8 +185,8 @@
                                 <div class="col-md-10">
                                     <div class="row tweet-info">
                                         <div class="col-md-9 mb-1">
-                                            <span class="tweet-username fs-2">${name}</span>
-                                            <span class="tweet-usertag text-muted">${email}</span>
+                                            <span class="tweet-username fs-2 text-break">${name}</span>
+                                            <span class="tweet-usertag text-muted text-break">${email}</span>
                                         </div>
                                         <div class="col tweet-arrow text-muted">
                                             <i class="fa-solid fa-pen-to-square mr-2"href="javascript:void(0)" onclick="prePopulateFormNew(${id})"></i>
@@ -197,7 +197,7 @@
                                           <span class="tweet-age text-muted">| Edit ${date_updated}</span>
                                         </div>
                                     </div>
-                                    <div class="tweet-text mb-4">
+                                    <div class="tweet-text mb-4 text-break">
                                         ${message}
                                     </div>
 
