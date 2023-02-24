@@ -18,5 +18,6 @@ else
 fi
 
 gunicorn main:app -c "$PWD"/gunicorn.config.py
+exec "$@"
 
 
