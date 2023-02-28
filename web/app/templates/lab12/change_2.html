@@ -23,10 +23,14 @@
           <input id="name" class="input is-large" type="name" name="name" placeholder="name" autofocus="">
         </div>
       </div>
+      <button class="button is-block is-info is-large is-fullwidth" onmouseover="this.style.backgroundColor='#006db9'"
+        onmouseout="this.style.backgroundColor=''">Confrim</button>
+    </form>
+    <button class="button is-block is-info is-large is-fullwidth"
+      onclick="location.href='{{ url_for('lab11_microblog')}}'"
+      style="margin-top: 10px; background-color:rgb(173, 173, 173) ;" onmouseover="this.style.backgroundColor='gray'"
+      onmouseout="this.style.backgroundColor='rgb(173, 173, 173)'">Cancel</button>
   </div>
-  <button class="button is-block is-info is-large is-fullwidth">Confrim</button>
-  </form>
-</div>
 </div>
 <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
 <script>

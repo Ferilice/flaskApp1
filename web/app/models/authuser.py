@@ -14,6 +14,14 @@ class AuthUser(db.Model, UserMixin):
     password = db.Column(db.String(100))
     avatar_url = db.Column(db.String(100))
 
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'email': self.email,
+            'name': self.name,
+            'password': self.password,
+            'avatar_url': self.avatar_url
+        }
 
     def __init__(self, email, name, password, avatar_url):
         self.email = email

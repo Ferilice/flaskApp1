@@ -16,8 +16,14 @@
           <input class="input is-large" type="password" name="password" placeholder="password" autofocus="">
         </div>
       </div>
-      <button class="button is-block is-info is-large is-fullwidth">Next</button>
+      <button class="button is-block is-info is-large is-fullwidth" onmouseover="this.style.backgroundColor='#006db9'"
+        onmouseout="this.style.backgroundColor=''">Next</button>
+
     </form>
+    <button class="button is-block is-info is-large is-fullwidth"
+      onclick="location.href='{{ url_for('lab11_microblog')}}'"
+      style="margin-top: 10px; background-color:rgb(173, 173, 173) ;" onmouseover="this.style.backgroundColor='gray'"
+      onmouseout="this.style.backgroundColor='rgb(173, 173, 173)'">Cancel</button>
   </div>
 </div>
 {% endblock %}

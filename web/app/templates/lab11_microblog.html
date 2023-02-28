@@ -39,12 +39,16 @@
       </div>
       <form class="form-inline">
         <input class="form-control shadow-sm" id="nav-search" type="search" placeholder="Search Twitter"> &nbsp;
-        <img class="tw-user-small rounded-circle" src={{ current_user.avatar_url}}> 
+        <img class="tw-user-small rounded-circle" src={{ current_user.avatar_url}}>
         {% if current_user.is_authenticated %}
-        <a class="btn  nav-tweet-btn-chage" id="" type="button" style="border-radius: 20px; margin-left: 20px;" href="{{ url_for('lab12_change_1') }}">Change</a>
-        <button class="btn  nav-tweet-btn" id="logout" type="button" style="border-radius: 20px; margin-left: 20px;">logout</button>
+        <a class="btn  nav-tweet-btn-chage" id="" type="button" style="border-radius: 20px; margin-left: 20px;"
+          href="{{ url_for('lab12_change_1') }}">Edit Account</a>
+        <button class="btn  nav-tweet-btn" id="logout" type="button"
+          style="border-radius: 20px; margin-left: 20px;">logout</button>
         {% else %}
-        <a class="btn  nav-tweet-btn" id="" type="button" style="border-radius: 20px; margin-bottom: 7px; height: 40px ;width: 100px;" href="{{ url_for('lab12_login') }}">login</a>
+        <a class="btn  nav-tweet-btn" id="" type="button"
+          style="border-radius: 20px; margin-bottom: 7px; height: 40px ;width: 100px;"
+          href="{{ url_for('lab12_login') }}">login</a>
         {% endif %}
       </form>
     </div>
@@ -59,8 +63,8 @@
       <!-- <label for="phone" style="font-size: 1.1rem;">อีเมลล์</label>
       <input class="message" type="email" id="email" name="email" placeholder="Your email.." required> -->
       <input type="hidden" id="entryid" name="id" value="">
-      <input type="hidden" id="owner_id" name="owner_id" value= {{ current_user.id }}>
-      <input type="submit" name="submit" value="Submit">
+      <input type="hidden" id="owner_id" name="owner_id" value={{ current_user.id }}>
+      <input type="submit" name="submit" value="Submit" onclick="reloadpage()">
       <button class="clear" id="clear_form" type="button" style="border-radius: 5px; padding: 12px 20px;">Clear</button>
       <button class="cancel" id="cancel_form" type="button"
         style="border-radius: 5px; padding: 12px 20px;">Cancel</button>
@@ -79,8 +83,14 @@
             <div class="new-tweet-row">
               <div class="row">
                 <div class="col-md-12 mb-5">
+                  {% if current_user.is_authenticated %}
                   <button id="add_contact" class="shadow rounded-pill createCon text-light fs-1 fw-bold"
                     type="button"><i class="fa-solid fa-circle-plus pr-2"></i>Create Contact</button>
+                  {% else %}
+                  <button id="add_contact" class="shadow rounded-pill createCon text-light fs-1 fw-bold"
+                    onclick="location.href='{{ url_for('lab12_login')}}'" type="button"><i
+                      class="fa-solid fa-circle-plus pr-2"></i>Create Contact</button>
+                  {% endif %}
                 </div>
               </div>
 
@@ -108,41 +118,64 @@
   $(document).ready(function () {
     (function () {
       $.getJSON("lab11/blog_entries", populate_table);
-
+      populate1();
+      populate_blog();
+      // setInterval(populate_blog, 600);
+      // reloadpage();
     })();
-    populate_blog();
+
   });
+  function reloadpage() {
+    location.reload()
+  }
   // refresh the table after a read update
   function refresh_table(contact_data) {
     $('#phonebook-table').bootstrapTable('load', contact_data);
     document.getElementById('test').innerHTML = "";
     populate_blog();
+    populate1();
+  }
+  let authuser = null;
+  function populate1() {
+    $.ajax({
+      url: "lab12/authuser", // total ID
+      type: "GET",
+      success: function (Authuser) {
+        Authuser.sort(function (a, b) {
+          return a.id - b.id;
+        });
+        authuser = Authuser
+      }
+    });
   }
   function populate_blog() {
     $.getJSON("lab11/blog_entries", function (blog_data) {
       blog_data.forEach(function (blog) {
+        populate1();
+        console.log(authuser);
         var dateCre = new Date(Date.parse(blog.date_created));
         var dateUp = new Date(Date.parse(blog.date_updated));
+        let number = parseInt(blog.owner_id - 1)
         if (blog.owner_id == document.getElementById('owner_id').value) {
           $("#test").prepend(blogEn1({
             id: blog.id,
-            name: blog.name,
+            name: authuser[number].name,
             message: blog.message,
-            email: blog.email,
+            email: authuser[number].email,
             date_created: dateCre.toLocaleDateString() + " " + dateCre.toLocaleTimeString(),
             date_updated: dateUp.toLocaleDateString() + " " + dateUp.toLocaleTimeString(),
-            avatar_url: blog.avatar_url
+            avatar_url: authuser[number].avatar_url
           }));
         }
         else {
           $("#test").prepend(blogEn2({
             id: blog.id,
-            name: blog.name,
+            name: authuser[number].name,
             message: blog.message,
-            email: blog.email,
+            email: authuser[number].email,
             date_created: dateCre.toLocaleDateString() + " " + dateCre.toLocaleTimeString(),
             date_updated: dateUp.toLocaleDateString() + " " + dateUp.toLocaleTimeString(),
-            avatar_url: blog.avatar_url
+            avatar_url: authuser[number].avatar_url
           }));
         }
       })
@@ -250,7 +283,9 @@
       refresh_table(contact_data);
       clearForm();
       toggleView();
+
     });
+    location.reload();
   });
 
 
@@ -336,6 +371,7 @@
 
 
   $("#add_contact").click(function () {
+
     clearForm();
     // $.getJSON("lab11/blog_entries", function (jj) {
     //   jj = $(jj).get().reverse();

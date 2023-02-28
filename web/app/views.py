@@ -239,7 +239,7 @@ def lab12_login():
         login_user(user, remember=remember)
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
-            next_page = url_for('lab12_profile')
+            next_page = url_for('lab11_microblog')
         return redirect(next_page)
 
 
@@ -334,13 +334,25 @@ def gen_avatar_url(email, name):
 @login_required
 def lab12_logout():
     logout_user()
-    return redirect(url_for('lab12_index'))
+    return redirect(url_for('lab11_microblog'))
 
 @login_manager.user_loader
 def load_user(user_id):
     # since the user_id is just the primary key of our
     # user table, use it in the query for the user
     return AuthUser.query.get(int(user_id))
+
+@app.route("/lab12/authuser")
+def lab12_db_authuser_all():
+    contacts = []
+    db_contacts = AuthUser.query.all()
+
+    contacts = list(map(lambda x: x.to_dict(), db_contacts))
+    app.logger.debug("DB Contacts: " + str(db_contacts))
+
+
+    return jsonify(contacts)
+
 
 @app.route('/lab12/change_1', methods=('GET', 'POST'))
 def lab12_change_1():
@@ -370,6 +382,8 @@ def lab12_change_2():
                 change= AuthUser.query.get(current_user.id)
                 change.email = email
                 change.name = name
+                avatar_url = gen_avatar_url(email, name)
+                change.avatar_url = avatar_url
                 current_user.email = email 
                 current_user.name =  name
                 db.session.commit()
@@ -381,6 +395,8 @@ def lab12_change_2():
         change = AuthUser.query.get(current_user.id)
         change.email = email
         change.name = name
+        avatar_url = gen_avatar_url(email, name)
+        change.avatar_url = avatar_url
         current_user.email = email 
         current_user.name =  name
         db.session.commit()

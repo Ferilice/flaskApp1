@@ -11,7 +11,7 @@
 
 
 <body>
- <section class="hero is-primary is-fullheight">
+ <section class="hero is-primary is-fullheight" style="background-color: #6f2fbe;">
    <div class="hero-head">
      <nav class="navbar">
        <div class="container ">
@@ -23,7 +23,7 @@
              <span aria-hidden="true"></span>
            </a>
          </div>
-         <div id="navbarMenuHeroA" class="navbar-menu">
+         <div id="navbarMenuHeroA" class="navbar-menu" >
            <div class="navbar-start">
              <a href="{{ url_for('lab11_microblog') }}" class="navbar-item">
                Home
@@ -57,7 +57,7 @@
        </div>
      </nav>
    </div>
-   <div class="hero-body">
+   <div class="hero-body" >
      <div class="container has-text-centered">
        {% block content %}
        {% endblock %}
