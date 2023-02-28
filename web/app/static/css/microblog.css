@@ -8,7 +8,8 @@ nav {
 }
 
 img.tw-user-small {
-    height: 40px;
+    margin-left: 15px;
+    height: 50px;
 }
 
 img.tw-user-medium {
@@ -22,11 +23,19 @@ img.tw-user-medium {
 
 }
 
-#nav-tweet-btn {
-    border-radius: 20px;
+.nav-tweet-btn {
     background-color: #f96767;
     color: #ffffff;
 }
+.nav-tweet-btn-chage {
+
+    color: black;
+}
+.nav-tweet-btn-chage:hover {
+    background-color: gray;
+    color: white;
+}
+
 
 .content-box {
     background-color: #ffffff;

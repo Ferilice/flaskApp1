@@ -39,72 +39,33 @@
       </div>
       <form class="form-inline">
         <input class="form-control shadow-sm" id="nav-search" type="search" placeholder="Search Twitter"> &nbsp;
-        <img class="tw-user-small rounded-circle"
-          src="https://icons.veryicon.com/png/o/internet--web/prejudice/user-128.png"> &nbsp;
-        <button class="btn " id="nav-tweet-btn" type="submit">Tweet</button>
+        <img class="tw-user-small rounded-circle" src={{ current_user.avatar_url}}> 
+        {% if current_user.is_authenticated %}
+        <a class="btn  nav-tweet-btn-chage" id="" type="button" style="border-radius: 20px; margin-left: 20px;" href="{{ url_for('lab12_change_1') }}">Change</a>
+        <button class="btn  nav-tweet-btn" id="logout" type="button" style="border-radius: 20px; margin-left: 20px;">logout</button>
+        {% else %}
+        <a class="btn  nav-tweet-btn" id="" type="button" style="border-radius: 20px; margin-bottom: 7px; height: 40px ;width: 100px;" href="{{ url_for('lab12_login') }}">login</a>
+        {% endif %}
       </form>
     </div>
   </nav>
   <div id="add-edit" class="container container-f shadow-sm" hidden="hidden">
     <h2 id="add-edit-caption">Add/Edit a Contact:</h2>
     <form id="addPhoneNumberForm">
-      <label for="name" style="font-size: 1.1rem;">ชื่อ</label>
-      <input type="text" id="name" name="name" placeholder="Your name.." required>
+      <!-- <label for="name" style="font-size: 1.1rem;">ชื่อ</label>
+      <input type="text" id="name" name="name" placeholder="Your name.." required> -->
       <label for="message" style="font-size: 1.1rem;">ข้อความ</label>
       <textarea rows="5" cols="30" id="message" name="message" placeholder="Your message.." required></textarea>
-      <label for="phone" style="font-size: 1.1rem;">อีเมลล์</label>
-      <input class="message" type="email" id="email" name="email" placeholder="Your email.." required>
+      <!-- <label for="phone" style="font-size: 1.1rem;">อีเมลล์</label>
+      <input class="message" type="email" id="email" name="email" placeholder="Your email.." required> -->
       <input type="hidden" id="entryid" name="id" value="">
+      <input type="hidden" id="owner_id" name="owner_id" value= {{ current_user.id }}>
       <input type="submit" name="submit" value="Submit">
       <button class="clear" id="clear_form" type="button" style="border-radius: 5px; padding: 12px 20px;">Clear</button>
-      <button class="cancel" id="cancel_form" type="button" style="border-radius: 5px; padding: 12px 20px;">Cancel</button>
+      <button class="cancel" id="cancel_form" type="button"
+        style="border-radius: 5px; padding: 12px 20px;">Cancel</button>
     </form>
   </div>
-  <!-- <div class="container">
-
-    <h2>Contacts:</h2>
-    <table class="table-striped border-success" id="phonebook-table">
-      <thead>
-        <tr>
-          <th data-field="id">
-            <span class="text-success">
-              id
-            </span>
-          </th>
-          <th data-field="name">
-            <span class="text-success">
-              ชื่อ
-            </span>
-          </th>
-          <th data-field="message">
-            <span class="text-success">
-              ข้อความ
-            </span>
-          </th>
-          <th data-field="email">
-            <span class="text-success">
-              เมลล์
-            </span>
-          </th>
-          <th data-field="date_created">
-            <span class="text-success">
-              เมลล์
-            </span>
-          </th>
-          <th data-field="date_updated">
-            <span class="text-success">
-              เมลล์
-            </span>
-          </th>
-          <th data-field="operation" data-formatter="actionFormatter" data-events="operateEvents">
-            <span class="text-success">
-              แก้ไข/ลบ
-            </span>
-          </th>
-        </tr>
-      </thead>
-    </table>
-  </div> -->
   <div>
 
     <div class="container " id="contact_display">
@@ -162,25 +123,37 @@
       blog_data.forEach(function (blog) {
         var dateCre = new Date(Date.parse(blog.date_created));
         var dateUp = new Date(Date.parse(blog.date_updated));
-        $("#test").prepend(blogEn({
-          id: blog.id,
-          name: blog.name,
-          message: blog.message,
-          email: blog.email,
-          date_created: dateCre.toLocaleDateString() + " " + dateCre.toLocaleTimeString(),
-          date_updated: dateUp.toLocaleDateString() + " " + dateUp.toLocaleTimeString(),
-
-        }));
-
+        if (blog.owner_id == document.getElementById('owner_id').value) {
+          $("#test").prepend(blogEn1({
+            id: blog.id,
+            name: blog.name,
+            message: blog.message,
+            email: blog.email,
+            date_created: dateCre.toLocaleDateString() + " " + dateCre.toLocaleTimeString(),
+            date_updated: dateUp.toLocaleDateString() + " " + dateUp.toLocaleTimeString(),
+            avatar_url: blog.avatar_url
+          }));
+        }
+        else {
+          $("#test").prepend(blogEn2({
+            id: blog.id,
+            name: blog.name,
+            message: blog.message,
+            email: blog.email,
+            date_created: dateCre.toLocaleDateString() + " " + dateCre.toLocaleTimeString(),
+            date_updated: dateUp.toLocaleDateString() + " " + dateUp.toLocaleTimeString(),
+            avatar_url: blog.avatar_url
+          }));
+        }
       })
     })
   }
-  const blogEn = ({ name, message, email, date_created, date_updated, id }) => `
+  const blogEn1 = ({ name, message, email, date_created, date_updated, id, avatar_url }) => `
               <div class="tweet shadow rounded-5">
                             <div class="row">
                                 <div class="col-md-2 text-center">
                                     <img class="tw-user-medium rounded-circle shadow-sm"
-                                        src="https://icons.veryicon.com/png/o/internet--web/prejudice/user-128.png">
+                                        src="${avatar_url}">
                                 </div>
                                 <div class="col-md-10">
                                     <div class="row tweet-info">
@@ -191,6 +164,39 @@
                                         <div class="col tweet-arrow text-muted">
                                             <i class="fa-solid fa-pen-to-square mr-2"href="javascript:void(0)" onclick="prePopulateFormNew(${id})"></i>
                                             <i class="fa-solid fa-trash " href="javascript:void(0)" onclick="removeItemNew(${id})"></i>
+                                        </div>
+                                        <div class="col-md-12 mb-3 ">
+                                          <span class="tweet-age text-muted ">Post ${date_created}</span>
+                                          <span class="tweet-age text-muted">| Edit ${date_updated}</span>
+                                        </div>
+                                    </div>
+                                    <div class="tweet-text mb-4 text-break">
+                                        ${message}
+                                    </div>
+
+                                    <div class="row text-muted">
+                                        <div class="col-md-2"><span class="oi oi-bullhorn"></span></div>
+                                        <div class="col-md-2"><span class="oi oi-loop-circular"></span></div>
+                                        <div class="col-md-2"><span class="oi oi-heart"></span></div>
+                                        <div class="col-md-2"><span class="oi oi-envelope-open"></span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
+  const blogEn2 = ({ name, message, email, date_created, date_updated, id, avatar_url }) => `
+              <div class="tweet shadow rounded-5">
+                            <div class="row">
+                                <div class="col-md-2 text-center">
+                                    <img class="tw-user-medium rounded-circle shadow-sm"
+                                        src="${avatar_url}">
+                                </div>
+                                <div class="col-md-10">
+                                    <div class="row tweet-info">
+                                        <div class="col-md-9 mb-1">
+                                            <span class="tweet-username fs-2 text-break">${name}</span>
+                                            <span class="tweet-usertag text-muted text-break">${email}</span>
+                                        </div>
+                                        <div class="col tweet-arrow text-muted">
                                         </div>
                                         <div class="col-md-12 mb-3 ">
                                           <span class="tweet-age text-muted ">Post ${date_created}</span>
@@ -331,13 +337,13 @@
 
   $("#add_contact").click(function () {
     clearForm();
-    $.getJSON("lab11/blog_entries", function (jj) {
-      jj = $(jj).get().reverse();
-      var b = jj[0];
-      $('#addPhoneNumberForm')[0].reset();
-      $('#name').val(b.name);
-      $('#email').val(b.email);
-    })
+    // $.getJSON("lab11/blog_entries", function (jj) {
+    //   jj = $(jj).get().reverse();
+    //   var b = jj[0];
+    //   $('#addPhoneNumberForm')[0].reset();
+    //   $('#name').val(b.name);
+    //   $('#email').val(b.email);
+    // })
     toggleView();
   });
   $("#clear_form").click(function () {
@@ -346,6 +352,10 @@
   $("#cancel_form").click(function () {
     clearForm();
     toggleView();
+  });
+  $("#logout").click(function () {
+    clearForm();
+    window.location.href = "lab12/logout";
   });
 
 

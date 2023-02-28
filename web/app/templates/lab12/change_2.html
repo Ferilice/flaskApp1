@@ -1,0 +1,44 @@
+{% extends "lab12/base.html" %}
+{% block content %}
+<div class="column is-4 is-offset-4">
+  <h3 class="title">Change</h3>
+  <div class="box">
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <div class="notification is-danger">
+      {{ messages[0] }}. Go to <a href="{{ url_for('lab12_change_2') }}">Change</a>.
+    </div>
+    {% endif %}
+    {% endwith %}
+    <form method="POST">
+      <div class="field">
+        <div class="control">
+          <label for="email"> Email :</label>
+          <input class="input is-large" id="email" type="email" name="email" placeholder="email" autofocus="">
+        </div>
+      </div>
+      <div class="field">
+        <div class="control">
+          <label for="naem"> Name :</label>
+          <input id="name" class="input is-large" type="name" name="name" placeholder="name" autofocus="">
+        </div>
+      </div>
+  </div>
+  <button class="button is-block is-info is-large is-fullwidth">Confrim</button>
+  </form>
+</div>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+<script>
+
+  $(document).ready(function () {
+    (function () {
+      $('#name').val("{{current_user.name}}");
+      $('#email').val("{{current_user.email}}");
+
+    })();
+  });
+
+
+</script>
+{% endblock %}

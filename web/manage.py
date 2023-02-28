@@ -30,7 +30,8 @@ def seed_db():
 สมชาย+ทรงแบด&background=83ee03&color=fff'))
 
     db.session.add(
-        PrivateContact(firstname='สมชาย', lastname='ทรงแบด', phone='081-111-1111'), owner_id=1)
+       PrivateContact(firstname='ส้มโอ', lastname='โอเค',
+                      phone='081-111-1112', owner_id=1))
     
     db.session.add(
         BlogEntry(name='สมชาย', message='ทรงแบด', email='somchine@gmail.com', date_created='2/19/2023 1:41 PM', date_updated='2/19/2023 1:41 PM'))

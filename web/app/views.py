@@ -74,6 +74,7 @@ def lab10_phonebook():
             app.logger.debug('validated dict: ' + str(validated_dict))
             # if there is no id: create a new contact entry
             if not id_:
+                validated_dict['owner_id'] = current_user.id
                 # entry = Contact(**validated_dict)
                 entry = PrivateContact(**validated_dict)
                 app.logger.debug(str(entry))
@@ -143,7 +144,7 @@ def lab11_microblog():
         id_ = result.get('id', '')
         validated = True
         validated_dict = dict()
-        valid_keys = ['name', 'message', 'email','date_created','date_updated']
+        valid_keys = ['message', 'date_created','date_updated']
 
 
         # validate the input
@@ -163,6 +164,10 @@ def lab11_microblog():
 
         if validated:
             app.logger.debug('validated dict: ' + str(validated_dict))
+            validated_dict['name'] = current_user.name
+            validated_dict['email'] = current_user.email
+            validated_dict['owner_id'] = current_user.id
+            validated_dict['avatar_url'] = current_user.avatar_url
             # if there is no id: create a new blog entry
             if not id_:
                 entry = BlogEntry(**validated_dict)
@@ -178,7 +183,7 @@ def lab11_microblog():
 
 
         return lab11_db_BlogEntry()
-    return app.send_static_file('lab11_microblog.html')
+    return render_template('lab11_microblog.html')
 
 @app.route('/lab11/remove_blog_entries', methods=('GET', 'POST'))
 def lab11_remove():
@@ -336,3 +341,51 @@ def load_user(user_id):
     # since the user_id is just the primary key of our
     # user table, use it in the query for the user
     return AuthUser.query.get(int(user_id))
+
+@app.route('/lab12/change_1', methods=('GET', 'POST'))
+def lab12_change_1():
+    if request.method == 'POST':
+        email = current_user.email
+        password = request.form.get('password')
+        change= AuthUser.query.filter_by(email=email).first()
+        if not change or not check_password_hash(change.password, password):
+            flash('Please check your login details and try again.')
+            return redirect(url_for('lab12_change_1'))
+
+        next_page = request.args.get('next')
+        if not next_page or url_parse(next_page).netloc != '':
+            next_page = url_for('lab12_change_2')
+        return redirect(next_page)
+    return render_template('lab12/change_1.html')
+
+@app.route('/lab12/change_2', methods=('GET', 'POST'))
+def lab12_change_2():
+    if request.method == 'POST':
+        email = request.form.get('email')
+        name = request.form.get('name')
+        change = AuthUser.query.filter_by(email=email).first()
+        if  change :
+            flash('This email has already been used. Please change your Email again.')
+            if email == current_user.email :
+                change= AuthUser.query.get(current_user.id)
+                change.email = email
+                change.name = name
+                current_user.email = email 
+                current_user.name =  name
+                db.session.commit()
+                next_page = request.args.get('next')
+                if not next_page or url_parse(next_page).netloc != '':
+                    next_page = url_for('lab11_microblog')
+                return redirect(next_page)
+            return redirect(url_for('lab12_change_2'))
+        change = AuthUser.query.get(current_user.id)
+        change.email = email
+        change.name = name
+        current_user.email = email 
+        current_user.name =  name
+        db.session.commit()
+        next_page = request.args.get('next')
+        if not next_page or url_parse(next_page).netloc != '':
+            next_page = url_for('lab11_microblog')
+        return redirect(next_page)
+    return render_template('lab12/change_2.html')
